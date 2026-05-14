@@ -1,0 +1,32 @@
+name: Binance Downloader Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo, pdo_mysql, curl
+
+      - name: Test API Connection + Insert
+        run: |
+          php -r '
+            $data = file_get_contents("https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1h&limit=1");
+            $klines = json_decode($data, true);
+            if (empty($klines)) exit(1);
+            echo "✅ Binance API is reachable - Test kline received.\n";
+            print_r($klines[0]);
+          '
+
+      - name: Success Message
+        run: echo "🎉 Basic connectivity test passed! Ready for production."

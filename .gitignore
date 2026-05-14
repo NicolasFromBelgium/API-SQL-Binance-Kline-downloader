@@ -1,0 +1,18 @@
+# Configuration
+config.php
+.env
+
+# Logs
+logs/
+*.log
+
+# PHP
+vendor/
+.phpunit.result.cache
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary
+*.tmp
