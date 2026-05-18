@@ -58,7 +58,9 @@ if (empty($symbols)) {
 
 // === 5. Timeframes ===
 $intervals = [
-    "1m"  => "ohlcv_data_1m"
+    "1M"  => "ohlcv_data_1M",  "1w"  => "ohlcv_data_1w",  "1d"  => "ohlcv_data_1d",
+    "4h"  => "ohlcv_data_4h",  "1h"  => "ohlcv_data_1h",  "30m" => "ohlcv_data_30m",
+    "15m" => "ohlcv_data_15m", "5m"  => "ohlcv_data_5m",  "1m"  => "ohlcv_data_1m"
 ];
 
 function fetchKlines($symbol, $interval, $limit, $startTime) {
