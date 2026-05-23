@@ -8,27 +8,34 @@ $scriptStart = microtime(true);
 echo "[" . date('Y-m-d H:i:s') . "] 🚀 Binance Updater started...\n";
 
 
-// === Config ===
-if (file_exists(__DIR__ . '/.env')) {
-    foreach (file(__DIR__ . '/.env', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
-        if (strpos($line, '=') !== false && strpos($line, '#') !== 0) {
-            [$k, $v] = explode('=', $line, 2);
-            putenv(trim($k) . '=' . trim($v));
-        }
-    }
+// =====================================================
+// CONFIGURATION
+// =====================================================
+
+$scriptStart = microtime(true);
+echo "[" . date('Y-m-d H:i:s') . "] 🚀 Binance Updater started...\n";
+
+// === Chargement config2.php ===
+$configFile = __DIR__ . '/config2.php';
+if (file_exists($configFile)) {
+    require_once $configFile;
+    echo "✅ config2.php chargé\n";
+} else {
+    die("❌ Fichier config2.php non trouvé !\n");
 }
 
-$configFile = __DIR__ . '/config.php';
-if (file_exists($configFile)) require_once $configFile;
+// === Connexion Base de Données ===
+$host = defined('DB_HOST') ? DB_HOST : 'localhost';
+$dbname = defined('DB_NAME') ? DB_NAME : 'gecko_data_2';
+$user = defined('DB_USER') ? DB_USER : 'root';
+$pass = defined('DB_PASS') ? DB_PASS : '';
 
-$host = $_ENV['DB_HOST'] ?? 'localhost';
-$dbname = 'gecko_data_2';
-$user = $_ENV['DB_USER'] ?? 'root';
-$pass = $_ENV['DB_PASS'] ?? 'Hellogo13364';
+echo "🔑 Utilisateur : $user | Base : $dbname\n";
 
 $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $user, $pass);
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+echo "✅ Connexion à la base de données OK\n";
 // Timeframes
 $timeframes = [
     '5m' => 5, '15m' => 15, '30m' => 30, '1h' => 60,
